@@ -1,0 +1,12 @@
+const r = require('express').Router();
+const { body, param } = require('express-validator');
+const validate = require('../middleware/validate');
+const { protect, allowRoles } = require('../middleware/authMiddleware');
+const c = require('../controllers/billingController');
+r.use(protect);
+r.get('/', c.list);
+r.get('/:id', param('id').isMongoId(), validate, c.get);
+r.post('/', body('reservationId').isMongoId(), validate, c.create);
+r.patch('/:id/payment', [param('id').isMongoId(), body('paymentAmount').isFloat({ gt: 0 }), body('paymentMethod').isIn(['Cash','Card','Bank Transfer'])], validate, c.payment);
+r.delete('/:id', allowRoles('Admin'), param('id').isMongoId(), validate, c.remove);
+module.exports = r;

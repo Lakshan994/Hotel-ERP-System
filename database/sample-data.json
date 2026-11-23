@@ -1,0 +1,42 @@
+{
+  "rooms": [
+    {
+      "roomNumber": "101",
+      "roomType": "Single",
+      "pricePerNight": 10000,
+      "capacity": 1,
+      "status": "Available"
+    },
+    {
+      "roomNumber": "102",
+      "roomType": "Double",
+      "pricePerNight": 15000,
+      "capacity": 2,
+      "status": "Available"
+    },
+    {
+      "roomNumber": "201",
+      "roomType": "Deluxe",
+      "pricePerNight": 22000,
+      "capacity": 2,
+      "status": "Maintenance"
+    }
+  ],
+  "customers": [
+    {
+      "firstName": "Amal",
+      "lastName": "Perera",
+      "phone": "0770000000",
+      "email": "amal@example.com",
+      "address": "Demo data only"
+    },
+    {
+      "firstName": "Nimali",
+      "lastName": "Fernando",
+      "phone": "0710000000",
+      "email": "nimali@example.com",
+      "address": "Demo data only"
+    }
+  ],
+  "note": "Illustrative examples for manual API entry; not imported automatically. Do not use real guest information."
+}

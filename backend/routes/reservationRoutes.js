@@ -1,0 +1,13 @@
+const r = require('express').Router();
+const { body, param } = require('express-validator');
+const validate = require('../middleware/validate');
+const { protect } = require('../middleware/authMiddleware');
+const c = require('../controllers/reservationController');
+r.use(protect);
+r.get('/', c.list);
+r.get('/:id', param('id').isMongoId(), validate, c.get);
+r.post('/', [body('customerId').isMongoId(), body('roomId').isMongoId(), body('checkInDate').isISO8601({ strict:true }), body('checkOutDate').isISO8601({ strict:true })], validate, c.create);
+r.put('/:id', param('id').isMongoId(), validate, c.update);
+r.patch('/:id/status', [param('id').isMongoId(), body('status').isIn(['Confirmed','CheckedIn','CheckedOut','Cancelled'])], validate, c.changeStatus);
+r.delete('/:id', param('id').isMongoId(), validate, c.cancel);
+module.exports = r;

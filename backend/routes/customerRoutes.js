@@ -1,0 +1,12 @@
+const r = require('express').Router();
+const { body, param } = require('express-validator');
+const validate = require('../middleware/validate');
+const { protect, allowRoles } = require('../middleware/authMiddleware');
+const c = require('../controllers/customerController');
+r.use(protect);
+r.get('/', c.list);
+r.get('/:id', param('id').isMongoId(), validate, c.get);
+r.post('/', [body('firstName').trim().notEmpty(), body('lastName').trim().notEmpty(), body('phone').trim().notEmpty(), body('email').optional({ values:'falsy' }).isEmail()], validate, c.create);
+r.put('/:id', param('id').isMongoId(), validate, c.update);
+r.delete('/:id', allowRoles('Admin'), param('id').isMongoId(), validate, c.remove);
+module.exports = r;

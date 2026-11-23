@@ -1,0 +1,13 @@
+const r = require('express').Router();
+const { body, param } = require('express-validator');
+const validate = require('../middleware/validate');
+const { protect, allowRoles } = require('../middleware/authMiddleware');
+const c = require('../controllers/roomController');
+r.use(protect);
+r.get('/', c.list);
+r.get('/:id', param('id').isMongoId(), validate, c.get);
+const checks = [body('roomNumber').trim().notEmpty(), body('roomType').isIn(['Single','Double','Deluxe','Suite']), body('pricePerNight').isFloat({ min: 0 }), body('capacity').isInt({ min: 1 })];
+r.post('/', allowRoles('Admin','Receptionist'), checks, validate, c.create);
+r.put('/:id', allowRoles('Admin','Receptionist'), param('id').isMongoId(), validate, c.update);
+r.delete('/:id', allowRoles('Admin'), param('id').isMongoId(), validate, c.remove);
+module.exports = r;
